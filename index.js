@@ -22,7 +22,7 @@ app.post('/send-email', async (req, res) => {
   try {
     // Using Resend to send email
     const response = await resend.emails.send({
-      from: 'Luis Santeliz <noreply@luissanteliz.dev>',
+      from: 'Jose Miguel <noreply@la95truckingshow.com>',
       to: 'la95truckingshow@gmail.com',
       subject: subject,
       html: `
@@ -35,7 +35,7 @@ app.post('/send-email', async (req, res) => {
           ${message}
         </div>
         <hr style="margin-top: 30px;">
-        <p style="font-size: 12px; color: #999;">Este mensaje fue enviado desde tu portafolio: <a href="https://luissanteliz.dev" target="_blank">luissanteliz.dev</a></p>
+        <p style="font-size: 12px; color: #999;">Este mensaje fue enviado desde tu sitio: <a href="https://la95truckingshow.com" target="_blank">la95truckingshow.com</a></p>
       </div>
     `,
     });
