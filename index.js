@@ -17,7 +17,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type, Authorization'],
 }));
 
-app.options('*', cors());
+app.options(/.*/, cors());
 
 // Initialize Resend
 const resend = new Resend(process.env.API_KEY_RESEND);
