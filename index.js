@@ -17,6 +17,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type, Authorization'],
 }));
 
+app.options('/send-email/', cors()); // Enable pre-flight for /send-email route
+
 const resend = new Resend(process.env.API_KEY_RESEND);
 
 // Routes
