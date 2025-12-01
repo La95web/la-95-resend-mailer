@@ -6,37 +6,45 @@ import { Resend } from 'resend';
 dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 3002;
 
-// CORS PRIMERO
-app.use(cors({
-  origin: 'https://la95truckingshow.com',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-}));
-
-app.options(/.*/, cors()); // <-- REQUIRED for preflight
-
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ 
+  origin: 'https://la95truckingshow.com',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type, Authorization'],
+}));
 
 const resend = new Resend(process.env.API_KEY_RESEND);
 
+// Routes
 app.post('/send-email', async (req, res) => {
-  const { subject, name, email, message } = req.body;
+  const { subject, name, email, message} = req.body;
 
   try {
+    // Using Resend to send email
     const response = await resend.emails.send({
       from: 'Jose Miguel <noreply@la95truckingshow.com>',
       to: 'la95truckingshow@gmail.com',
-      subject,
+      subject: subject,
       html: `
-        <h2>Nuevo mensaje de contacto</h2>
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <h2 style="color: #007BFF;">📩 Nuevo mensaje de contacto</h2>
         <p><strong>Nombre:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p>${message}</p>
-      `
+        <p><strong>Mensaje:</strong></p>
+        <div style="background-color: #f9f9f9; padding: 10px; border-left: 4px solid #007BFF;">
+          ${message}
+        </div>
+        <hr style="margin-top: 30px;">
+        <p style="font-size: 12px; color: #999;">Este mensaje fue enviado desde tu sitio: <a href="https://la95truckingshow.com" target="_blank">la95truckingshow.com</a></p>
+      </div>
+    `,
     });
 
+    console.log('Email sent successfully:', response);
     res.status(200).json({ message: 'Email sent successfully', response });
   } catch (error) {
     console.error('Error sending email:', error);
@@ -44,9 +52,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-// 🔥 EL PORT CORRECTO PARA RAILWAY
-const port = process.env.PORT || 3002;
-
+// Start server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+  console.log(`Server running at http://localhost:${port}`);
+}); 
