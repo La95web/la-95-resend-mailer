@@ -11,7 +11,7 @@ const port = 3002;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: 'https://la95truckingshow.com/' }));
+app.use(cors({ origin: 'https://la95truckingshow.com' }));
 
 const resend = new Resend(process.env.API_KEY_RESEND);
 
