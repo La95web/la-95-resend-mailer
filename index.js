@@ -14,10 +14,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ 
   origin: 'https://la95truckingshow.com',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type, Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.options(/.*/, cors());
+app.options(/.*/, (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://la95truckingshow.com');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(204);
+});
 
 // Initialize Resend
 const resend = new Resend(process.env.API_KEY_RESEND);
@@ -30,7 +35,7 @@ app.post('/send-email', async (req, res) => {
     // Using Resend to send email
     const response = await resend.emails.send({
       from: 'Jose Miguel <noreply@la95truckingshow.com>',
-      to: 'la95truckingshow@gmail.com',
+      to: 'luissanteliz22@gmail.com',
       subject: subject,
       html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
